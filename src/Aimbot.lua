@@ -231,6 +231,7 @@ local GetClosestPlayer = function()
 	end
 end
 
+local Load = function()
 	OriginalSensitivity = __index(UserInputService, "MouseDeltaSensitivity")
 
 	local Settings, FOVCircle, FOVCircleOutline, FOVSettings, Offset = Environment.Settings, Environment.FOVCircle, Environment.FOVCircleOutline, Environment.FOVSettings
