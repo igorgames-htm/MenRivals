@@ -219,14 +219,14 @@ local GetClosestPlayer = function()
 
 				local Vector, OnScreen, Distance = WorldToViewportPoint(Camera, PartPosition)
 				Vector = ConvertVector(Vector)
-				Distance = (GetMouseLocation() - Vector).Magnitude
+				Distance = (GetScreenCenter() - Vector).Magnitude
 
 				if Distance < RequiredDistance and OnScreen then
 					RequiredDistance, Environment.Locked = Distance, Value
 				end
 			end
 		end
-	elseif (GetMouseLocation() - ConvertVector(WorldToViewportPoint(Camera, __index(__index(__index(Environment.Locked, "Character"), LockPart), "Position")))).Magnitude > RequiredDistance then
+	elseif (GetScreenCenter() - ConvertVector(WorldToViewportPoint(Camera, __index(__index(__index(Environment.Locked, "Character"), LockPart), "Position")))).Magnitude > RequiredDistance then
 		CancelLock()
 	end
 end
@@ -261,8 +261,8 @@ local Load = function()
 			setrenderproperty(FOVCircleOutline, "Color", FOVSettings.RainbowOutlineColor and GetRainbowColor() or FOVSettings.OutlineColor)
 
 			setrenderproperty(FOVCircleOutline, "Thickness", FOVSettings.Thickness + 1)
-			setrenderproperty(FOVCircle, "Position", GetMouseLocation())
-			setrenderproperty(FOVCircleOutline, "Position", GetMouseLocation())
+			setrenderproperty(FOVCircle, "Position", GetScreenCenter())
+			setrenderproperty(FOVCircleOutline, "Position", GetScreenCenter())
 		else
 			setrenderproperty(FOVCircle, "Visible", false)
 			setrenderproperty(FOVCircleOutline, "Visible", false)
@@ -278,7 +278,7 @@ local Load = function()
 				local LockedPosition = WorldToViewportPoint(Camera, LockedPosition_Vector3 + Offset)
 
 				if Environment.Settings.LockMode == 2 then
-					mousemoverel((LockedPosition.X - GetMouseLocation().X) / Settings.Sensitivity2, (LockedPosition.Y - GetMouseLocation().Y) / Settings.Sensitivity2)
+					mousemoverel((LockedPosition.X - GetScreenCenter().X) / Settings.Sensitivity2, (LockedPosition.Y - GetScreenCenter().Y) / Settings.Sensitivity2)
 				else
 					if Settings.Sensitivity > 0 then
 						Animation = TweenService:Create(Camera, TweenInfonew(Environment.Settings.Sensitivity, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {CFrame = CFramenew(Camera.CFrame.Position, LockedPosition_Vector3)})
