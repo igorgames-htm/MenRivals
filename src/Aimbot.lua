@@ -37,7 +37,16 @@ local RunService = GetService(game, "RunService")
 local UserInputService = GetService(game, "UserInputService")
 local TweenService = GetService(game, "TweenService")
 local Players = GetService(game, "Players")
+local rbxopen = false
+local GuiService = GetService(game, "GuiService")
 
+GuiService.MenuOpened:Connect(function()
+	rbxopen = true
+end)
+
+GuiService.MenuClosed:Connect(function()
+	rbxopen = false
+end)
 --// Service Methods
 
 local LocalPlayer = __index(Players, "LocalPlayer")
@@ -268,7 +277,7 @@ local Load = function()
 			setrenderproperty(FOVCircleOutline, "Visible", false)
 		end
 
-		if Running and Settings.Enabled then
+		if Running and rbxopen and isrbxactive() and Settings.Enabled then
 			GetClosestPlayer()
 
 			Offset = OffsetToMoveDirection and __index(FindFirstChildOfClass(__index(Environment.Locked, "Character"), "Humanoid"), "MoveDirection") * (mathclamp(Settings.OffsetIncrement, 1, 30) / 10) or Vector3zero
