@@ -47,7 +47,10 @@ local FindFirstChild, FindFirstChildOfClass = __index(game, "FindFirstChild"), _
 local GetDescendants = __index(game, "GetDescendants")
 local WorldToViewportPoint = __index(Camera, "WorldToViewportPoint")
 local GetPartsObscuringTarget = __index(Camera, "GetPartsObscuringTarget")
-local GetMouseLocation = Camera.ViewportSize / 2
+local function GetScreenCenter(...)
+    local ViewportSize = Camera.ViewportSize
+    return Vector2.new(ViewportSize.X / 2, ViewportSize.Y / 2)
+end
 local GetPlayers = __index(Players, "GetPlayers")
 
 --// Variables
@@ -216,14 +219,14 @@ local GetClosestPlayer = function()
 
 				local Vector, OnScreen, Distance = WorldToViewportPoint(Camera, PartPosition)
 				Vector = ConvertVector(Vector)
-				Distance = (GetMouseLocation - Vector).Magnitude
+				Distance = (GetMouseLocation() - Vector).Magnitude
 
 				if Distance < RequiredDistance and OnScreen then
 					RequiredDistance, Environment.Locked = Distance, Value
 				end
 			end
 		end
-	elseif (GetMouseLocation - ConvertVector(WorldToViewportPoint(Camera, __index(__index(__index(Environment.Locked, "Character"), LockPart), "Position")))).Magnitude > RequiredDistance then
+	elseif (GetMouseLocation() - ConvertVector(WorldToViewportPoint(Camera, __index(__index(__index(Environment.Locked, "Character"), LockPart), "Position")))).Magnitude > RequiredDistance then
 		CancelLock()
 	end
 end
@@ -240,7 +243,6 @@ local Load = function()
 	]]
 
 	ServiceConnections.RenderSteppedConnection = Connect(__index(RunService, Environment.DeveloperSettings.UpdateMode), function()
-		GetMouseLocation = Camera.ViewportSize / 2
 		local OffsetToMoveDirection, LockPart = Settings.OffsetToMoveDirection, Settings.LockPart
 
 		if FOVSettings.Enabled and Settings.Enabled then
@@ -259,8 +261,8 @@ local Load = function()
 			setrenderproperty(FOVCircleOutline, "Color", FOVSettings.RainbowOutlineColor and GetRainbowColor() or FOVSettings.OutlineColor)
 
 			setrenderproperty(FOVCircleOutline, "Thickness", FOVSettings.Thickness + 1)
-			setrenderproperty(FOVCircle, "Position", GetMouseLocation)
-			setrenderproperty(FOVCircleOutline, "Position", GetMouseLocation)
+			setrenderproperty(FOVCircle, "Position", GetMouseLocation())
+			setrenderproperty(FOVCircleOutline, "Position", GetMouseLocation())
 		else
 			setrenderproperty(FOVCircle, "Visible", false)
 			setrenderproperty(FOVCircleOutline, "Visible", false)
@@ -276,7 +278,7 @@ local Load = function()
 				local LockedPosition = WorldToViewportPoint(Camera, LockedPosition_Vector3 + Offset)
 
 				if Environment.Settings.LockMode == 2 then
-					mousemoverel((LockedPosition.X - GetMouseLocation.X) / Settings.Sensitivity2, (LockedPosition.Y - GetMouseLocation.Y) / Settings.Sensitivity2)
+					mousemoverel((LockedPosition.X - GetMouseLocation().X) / Settings.Sensitivity2, (LockedPosition.Y - GetMouseLocation().Y) / Settings.Sensitivity2)
 				else
 					if Settings.Sensitivity > 0 then
 						Animation = TweenService:Create(Camera, TweenInfonew(Environment.Settings.Sensitivity, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {CFrame = CFramenew(Camera.CFrame.Position, LockedPosition_Vector3)})
