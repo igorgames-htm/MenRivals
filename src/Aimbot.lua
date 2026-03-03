@@ -47,7 +47,7 @@ local FindFirstChild, FindFirstChildOfClass = __index(game, "FindFirstChild"), _
 local GetDescendants = __index(game, "GetDescendants")
 local WorldToViewportPoint = __index(Camera, "WorldToViewportPoint")
 local GetPartsObscuringTarget = __index(Camera, "GetPartsObscuringTarget")
-local GetMouseLocation = __index(UserInputService, "GetMouseLocation")
+local GetMouseLocation = Camera.ViewportSize / 2
 local GetPlayers = __index(Players, "GetPlayers")
 
 --// Variables
