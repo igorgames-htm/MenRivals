@@ -47,7 +47,7 @@ local FindFirstChild, FindFirstChildOfClass = __index(game, "FindFirstChild"), _
 local GetDescendants = __index(game, "GetDescendants")
 local WorldToViewportPoint = __index(Camera, "WorldToViewportPoint")
 local GetPartsObscuringTarget = __index(Camera, "GetPartsObscuringTarget")
-local function GetScreenCenter(...)
+local function GetScreenCenter()
     local ViewportSize = Camera.ViewportSize
     return Vector2.new(ViewportSize.X / 2, ViewportSize.Y / 2)
 end
