@@ -11,13 +11,7 @@ local game, workspace = game, workspace
 local getrawmetatable, getmetatable, setmetatable, pcall, getgenv, next, tick = getrawmetatable, getmetatable, setmetatable, pcall, getgenv, next, tick
 local Vector2new, Vector3zero, CFramenew, Color3fromRGB, Color3fromHSV, Drawingnew, TweenInfonew = Vector2.new, Vector3.zero, CFrame.new, Color3.fromRGB, Color3.fromHSV, Drawing.new, TweenInfo.new
 local getupvalue, mousemoverel, tablefind, tableremove, stringlower, stringsub, mathclamp = debug.getupvalue, mousemoverel or (Input and Input.MouseMove), table.find, table.remove, string.lower, string.sub, math.clamp
-local UIS = game:GetService("UserInputService")
-local Players = game:GetService("Players")
-local RS = game:GetService("RunService")
 
-local lp = Players.LocalPlayer
-local ctrl = lp.PlayerScripts:WaitForChild("Controllers")
-local cc = require(ctrl:WaitForChild("CameraController"))
 local GameMetatable = getrawmetatable and getrawmetatable(game) or {
 	-- Auxillary functions - if the executor doesn't support "getrawmetatable".
 
@@ -116,7 +110,7 @@ getgenv().ExunysDeveloperAimbot = {
 		Sensitivity2 = 3.5, -- mousemoverel Sensitivity
 
 		LockMode = 1, -- 1 = CFrame; 2 = mousemoverel
-		LockPart = "HitboxHead", -- Body part to lock on
+		LockPart = "Head", -- Body part to lock on
 
 		TriggerKey = Enum.UserInputType.MouseButton2,
 		Toggle = false
@@ -287,12 +281,13 @@ local Load = function()
 					mousemoverel((LockedPosition.X - GetScreenCenter().X) / Settings.Sensitivity2, (LockedPosition.Y - GetScreenCenter().Y) / Settings.Sensitivity2)
 				else
 					if Settings.Sensitivity > 0 then
-						local targetCF = CFrame.lookAt(cam.CFrame.Position, target.Position)
-    					local smoothCF = cam.CFrame:Lerp(targetCF, 1-Settings.Sensitivity)
-						cc:MimicRotation(CFrame.lookAt(Camera.CFrame.Position, LockedPosition_Vector3))
+						Animation = TweenService:Create(Camera, TweenInfonew(Environment.Settings.Sensitivity, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {CFrame = CFramenew(Camera.CFrame.Position, LockedPosition_Vector3)})
+						Animation:Play()
 					else
-						cc:MimicRotation(CFrame.lookAt(Camera.CFrame.Position, LockedPosition_Vector3))
+						__newindex(Camera, "CFrame", CFramenew(Camera.CFrame.Position, LockedPosition_Vector3 + Offset))
 					end
+
+					__newindex(UserInputService, "MouseDeltaSensitivity", 0)
 				end
 
 				setrenderproperty(FOVCircle, "Color", FOVSettings.LockedColor)
