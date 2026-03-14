@@ -289,7 +289,7 @@ local Load = function()
 					if Settings.Sensitivity > 0 then
 						local targetCF = CFrame.lookAt(cam.CFrame.Position, target.Position)
     					local smoothCF = cam.CFrame:Lerp(targetCF, 1-Settings.Sensitivity)
-						cc:MimicRotation(CFramenew(Camera.CFrame.Position, LockedPosition_Vector3))
+						cc:MimicRotation(CFrame.lookAt(Camera.CFrame.Position, LockedPosition_Vector3))
 					else
 						cc:MimicRotation(CFrame.lookAt(Camera.CFrame.Position, LockedPosition_Vector3))
 					end
